@@ -1,0 +1,12 @@
+measure,value
+students in the test set,2911.0
+half the students are missed by less than,2.5482173587756876
+average miss (this is the MAE),3.6596530005650916
+root mean squared error (the RMSE),5.206723344594356
+9 in 10 students are missed by less than,8.526559925171057
+99 in 100 students are missed by less than,17.99326798891246
+worst single miss,31.31805916270345
+share predicted within 2 marks,41.360357265544486
+share predicted within 5 marks,76.46856750257643
+share predicted within 10 marks,93.19821367227756
+share predicted within 15 marks,98.38543455857094

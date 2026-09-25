@@ -1,0 +1,18 @@
+feature,Random Forest
+num__class_size,0.39246769149164146
+num__number_of_siblings,0.2676037146386395
+num__hours_per_week,0.11183298324986936
+num__attendance_rate,0.056267441064865205
+cat__learning_style_Visual,0.045968854409279454
+cat__learning_style_Auditory,0.03620799501688542
+cat__tuition_Yes,0.01817957681143566
+cat__CCA_NONE,0.017098521118245728
+cat__tuition_No,0.016964207627235793
+cat__direct_admission_Yes,0.015404505865458766
+cat__direct_admission_No,0.015103372851364028
+num__sleep_hours,0.0016529363348282706
+num__age,0.0014915407029792466
+cat__CCA_SPORTS,0.0011791519942489094
+cat__CCA_CLUBS,0.0009849812918259738
+cat__CCA_ARTS,0.0009760246100368249
+num__missingindicator_attendance_rate,0.0006165009211603972

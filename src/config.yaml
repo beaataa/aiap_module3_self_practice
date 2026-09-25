@@ -1,0 +1,80 @@
+# paths are relative to the project root, not to src/
+data:
+  raw: data/regression_bonus_practice_data.csv
+  cleaned: data/cleaned.csv
+
+target: final_test
+id_column: student_id
+
+cleaning:
+  # index is a row number, gender and mode_of_transport showed flat boxplots
+  drop_upfront: [index, gender, mode_of_transport]
+
+  # bag_color is noise, but it cannot be dropped up front. dedup runs in two
+  # passes: first exact duplicate rows, which needs every column present to be
+  # a fair comparison, then one row per student. bag_color goes between the
+  # two, because it is one of the columns making the same student look like
+  # two different rows
+  drop_after_exact_dedup: [bag_color]
+
+  # o level students, so anything outside 15 and 16 is a typo missing its "1"
+  age_typo_map: {5: 15, 6: 16}
+  valid_ages: [15, 16]
+
+  # Y/N in some rows, Yes/No in others
+  tuition_map: {"Y": "Yes", "N": "No"}
+
+  # blank CCA sits in the same slot NONE fills in the other entry style and
+  # scores the same, so it means no cca rather than unknown. see eda.ipynb
+  cca_missing_fill: "NONE"
+
+features:
+  # n_male + n_female, then the originals are dropped
+  class_size_from: [n_male, n_female]
+  # wake_time - sleep_time, mod 24 so sleeping past midnight stays positive
+  sleep_hours_from: [sleep_time, wake_time]
+
+# columns the model never sees. student_id identifies a student, it does not
+# predict anything
+drop_for_modelling: [student_id]
+
+split:
+  test_size: 0.2
+  random_state: 42
+
+preprocessing:
+  # attendance_rate is the only column with gaps. median because the
+  # distribution has a long tail down to 40 and the mean gets dragged by it
+  numeric_impute_strategy: median
+  # extra 0/1 column flagging which attendance_rate values were filled in
+  add_missing_indicator: true
+
+evaluation:
+  cv_folds: 5
+  random_state: 42
+  results_dir: results
+
+# only the models listed here get tuned, the rest run at their defaults
+tuning:
+  enabled: true
+  grids:
+    # min_samples_leaf starts at 5, not 1. allowing 1 scored marginally better
+    # (0.08 rmse) but left 192 leaves holding a single student, so those
+    # predictions rested on one classmate. this model is the explainable one,
+    # so every leaf should stand on a few students
+    Decision Tree:
+      model__max_depth: [null, 5, 10, 20]
+      model__min_samples_leaf: [5, 20, 50]
+    # 1 is fine here, unlike the single tree above. averaging 200 trees washes
+    # out any one tree's tiny leaves, which is what the ensemble is for
+    Random Forest:
+      model__n_estimators: [200]
+      model__max_depth: [null, 10, 20]
+      model__min_samples_leaf: [1, 5]
+      model__max_features: [1.0, "sqrt"]
+    # given the same number of combinations as the other two, so the comparison
+    # is not decided by one model having been searched harder than another
+    Gradient Boosting:
+      model__learning_rate: [0.05, 0.1, 0.2]
+      model__max_depth: [null, 6]
+      model__max_iter: [100, 300]

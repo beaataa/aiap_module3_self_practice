@@ -1,0 +1,4 @@
+model,best_params
+Decision Tree,"{'model__max_depth': 10, 'model__min_samples_leaf': 5}"
+Random Forest,"{'model__max_depth': 10, 'model__max_features': 1.0, 'model__min_samples_leaf': 1, 'model__n_estimators': 200}"
+Gradient Boosting,"{'model__learning_rate': 0.05, 'model__max_depth': None, 'model__max_iter': 300}"
