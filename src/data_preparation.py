@@ -64,8 +64,9 @@ def fix_age(df, cleaning):
 
 
 def deduplicate(df, id_column, cleaning):
-    # pass 1: rows identical in every column. done first, while every column is
-    # still here, so two rows only count as duplicates if they really match
+    # pass 1: rows identical in every remaining column. done before bag_color is
+    # dropped, so two rows only count as duplicates if they really match. the
+    # three columns already dropped above merge no extra rows, checked
     df = df.drop_duplicates()
 
     # what survives still has repeated student ids, differing only in bag_color

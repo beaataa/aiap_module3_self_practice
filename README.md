@@ -55,7 +55,7 @@ raw csv
    -> engineer       class_size, sleep_hours
    -> split 80/20    before anything is fitted
    -> preprocess     impute, one hot encode, scale (fitted on train folds only)
-   -> train          6 models, 5 fold cross validation, grid search
+   -> train          5 models, 5 fold cross validation, grid search
    -> evaluate       test set scored once, at the end
 ```
 
@@ -394,9 +394,6 @@ student's control. The model identifies who is at risk, not what to change.
   score partly for that reason alone. A fairer check is to shuffle one column
   at random and see how much worse the model gets, which is called permutation
   importance. It was not run here.
-- **The deduplication rule is a judgement call.** Where two rows for one
-  student both have a recorded `attendance_rate`, the lower one is kept. The
-  alternative choices were not tested.
 - **The results come from one train/test split.** The three tree models land
   within 0.25 RMSE of each other, which is close enough that another seed could
   reorder them. Repeating across several seeds would settle it.

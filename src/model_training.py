@@ -264,12 +264,15 @@ def main():
 
     test_results = evaluate_on_test(fitted, X_test, y_test)
 
-    comparison = cv_results.merge(test_results, on="model").sort_values("test_rmse")
+    # sorted on cross validation, not on test. picking the winner is a decision,
+    # and decisions are made on the training data. the test column is reported
+    # next to it as a check, it does not choose. here the two agree anyway
+    comparison = cv_results.merge(test_results, on="model").sort_values("cv_rmse")
     print("\nmodel comparison")
     print(comparison.round(3).to_string(index=False))
 
     best_name = comparison.iloc[0]["model"]
-    print(f"\nbest by test rmse: {best_name}")
+    print(f"\nbest by cv rmse: {best_name}")
 
     profile = error_profile(fitted[best_name], X_test, y_test)
     print(f"\nhow far off {best_name} is, in marks")
